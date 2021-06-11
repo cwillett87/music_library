@@ -51,9 +51,9 @@ class SongDetail(APIView):
 
 class SongLike(APIView):
 
-    def get_object(self, pk, likes):
+    def get_object(self, pk, title):
         try:
-            return Song.objects.get(pk=pk, likes=likes)
+            return Song.objects.get(pk=pk, title=title)
         except Song.DoesNotExist:
             raise Http404
 
@@ -62,8 +62,8 @@ class SongLike(APIView):
         serializer = SongSerializer(song)
         return Response(serializer.data)
 
-    def patch(self, request, pk, likes):
-        song = self.get_object(pk, likes=likes)
+    def patch(self, request, pk, title):
+        song = self.get_object(pk, title=title)
         data = {"likes": song.likes + int(1)}
         serializer = SongSerializer(song, data=data, partial=True)
         if serializer.is_valid():
